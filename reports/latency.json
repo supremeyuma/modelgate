@@ -1,0 +1,8 @@
+{
+  "budget_ms": 150.0,
+  "model_version": "v3e096fbeeba8",
+  "p50_ms": 62.59,
+  "p95_ms": 64.85,
+  "passed": true,
+  "samples": 40
+}
