@@ -64,18 +64,23 @@ class TrainedModel:
             return float(self.calibration_factors[horizon - 1])
         return 1.0
 
-    def predict_frame(
-        self, features: pd.DataFrame, horizons: Sequence[int] | None = None
+    def predict_matrix(
+        self, matrix: np.ndarray, horizons: Sequence[int] | None = None
     ) -> dict[str, np.ndarray]:
-        matrix = features.loc[:, list(self.feature_names)].to_numpy(dtype=float)
         if horizons is None:
-            factor = np.ones(len(features), dtype=float)
+            factor = np.ones(matrix.shape[0], dtype=float)
         else:
             factor = np.array([self.factor_for(int(step)) for step in horizons], dtype=float)
         return {
             name: np.clip(np.asarray(booster.predict(matrix), dtype=float) * factor, 0.0, None)
             for name, booster in self.boosters.items()
         }
+
+    def predict_frame(
+        self, features: pd.DataFrame, horizons: Sequence[int] | None = None
+    ) -> dict[str, np.ndarray]:
+        matrix = features.loc[:, list(self.feature_names)].to_numpy(dtype=float)
+        return self.predict_matrix(matrix, horizons)
 
     def predict_one(self, features: pd.DataFrame) -> dict[str, float]:
         predictions = self.predict_frame(features, [1] * len(features))

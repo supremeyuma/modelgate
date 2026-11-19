@@ -107,6 +107,80 @@ def build_features(
     return valid
 
 
+def tail_feature_vector(
+    contract: FeatureContract,
+    values: np.ndarray,
+    last_date: pd.Timestamp,
+    promo: bool,
+    holiday: bool,
+) -> dict[str, float | int]:
+    """Feature values for one row from a demand history ending *before* that row."""
+    row: dict[str, float | int] = {}
+    for spec in contract.specs:
+        if spec.kind == "lag":
+            assert spec.window is not None
+            index = values.size - spec.window
+            if index < 0:
+                raise ValueError(f"not enough history for {spec.name}")
+            row[spec.name] = float(values[index])
+        elif spec.kind in {"rolling_mean", "rolling_std"}:
+            assert spec.window is not None
+            window_values = values[-spec.window :]
+            if window_values.size < spec.window:
+                raise ValueError(f"not enough history for {spec.name}")
+            if spec.kind == "rolling_mean":
+                row[spec.name] = float(window_values.mean())
+            else:
+                row[spec.name] = float(window_values.std(ddof=1))
+        elif spec.kind == "calendar":
+            row[spec.name] = int(pd.Timestamp(last_date).day_of_week)
+        elif spec.kind == "flag":
+            row[spec.name] = int(promo if spec.source == "promo" else holiday)
+        else:
+            raise ValueError(f"unsupported feature spec: {spec.name}")
+    return row
+
+
+def compute_tail_features(
+    frame: pd.DataFrame, contract: FeatureContract | None = None
+) -> pd.DataFrame:
+    """Features for the last row of every SKU, computed from a bounded history tail.
+
+    Semantically identical to the last row of :func:`compute_feature_frame`, but used by the
+    recursive forecaster where rebuilding the whole panel 28 times would dominate latency.
+    The last demand value may be NaN (the row being forecast); lags skip it.
+    """
+    active = contract or default_contract()
+    _require_history(frame)
+    ordered = frame.sort_values(["sku", "date"], kind="mergesort")
+    rows: list[dict[str, object]] = []
+    for sku, group in ordered.groupby("sku", sort=True):
+        current = group.sort_values("date")
+        last = current.iloc[-1]
+        # The final row is the one being forecast; its demand must not enter any lag.
+        values = current["demand"].to_numpy(dtype=float)[:-1]
+        row: dict[str, object] = {
+            "sku": sku,
+            "date": last["date"],
+            "family": last["family"],
+            "promo": bool(last["promo"]),
+            "holiday": bool(last["holiday"]),
+            "demand": last["demand"],
+        }
+        row.update(
+            tail_feature_vector(
+                active,
+                values,
+                pd.Timestamp(last["date"]),
+                bool(last["promo"]),
+                bool(last["holiday"]),
+            )
+        )
+        rows.append(row)
+    result = pd.DataFrame(rows)
+    return result.loc[:, ["sku", "date", "family", "demand", *active.feature_names]]
+
+
 def check_point_in_time(
     frame: pd.DataFrame,
     contract: FeatureContract | None = None,

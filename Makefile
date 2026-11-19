@@ -25,7 +25,7 @@ data:
 	$(PY) python -m modelgate.data.ingest
 
 train:
-	$(PY) python -m modelgate.train.pipeline
+	$(PY) python -m modelgate.train.pipeline --register
 
 evaluate:
 	$(PY) python -m modelgate.backtest.rolling_origin --report
