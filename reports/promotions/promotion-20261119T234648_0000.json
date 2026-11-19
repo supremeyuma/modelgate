@@ -1,0 +1,83 @@
+{
+  "challenger": {
+    "artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "version": "demo-challenger"
+  },
+  "champion": {
+    "artifact_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "version": "demo-champion"
+  },
+  "checks": {
+    "bias_within_bound": false,
+    "ci_excludes_zero": true,
+    "dm_significant": true,
+    "latency_within_budget": true,
+    "mean_wape_improves": true,
+    "tail_risk_bounded": false
+  },
+  "dataset_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "decided_at": "2026-11-19T23:46:48+00:00",
+  "decision": "REJECT",
+  "feature_version_hash": "1e0156c7dfa070da43a414996fb50d78da559b8b22915d27803f1666fdac9c62",
+  "git_sha": "demo",
+  "metrics": {
+    "bias_pct_by_horizon": {
+      "1": -1.8710495145555334e-14,
+      "10": 3.8546234369913943,
+      "11": 4.03028291019893,
+      "12": 4.037821931873623,
+      "13": 3.9607145358044464,
+      "14": 4.007165762522777,
+      "15": -1.8859568348757568e-14,
+      "16": 0.0,
+      "17": -1.8653164992678316e-14,
+      "18": -1.887569366311061e-14,
+      "19": 1.9137881317334127e-14,
+      "2": 0.0,
+      "20": 0.0,
+      "21": 1.8910507298441497e-14,
+      "22": 4.031037198161864,
+      "23": 4.090871200059823,
+      "24": 3.9490442404958004,
+      "25": 3.986260450006665,
+      "26": 4.020893725243855,
+      "27": 3.9578359011620745,
+      "28": 3.954853041476424,
+      "3": 1.9119894415871665e-14,
+      "4": 1.910814752986345e-14,
+      "5": 1.9069565144316875e-14,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 3.9654301106672425,
+      "9": 3.964550789846804
+    },
+    "bootstrap_ci": [
+      -0.014059599009179226,
+      -0.0024338452904374324
+    ],
+    "challenger_wape": 0.043214704604925394,
+    "champion_wape": 0.05162956436011284,
+    "delta_wape": -0.008414859755187444,
+    "dm_p_value": 0.0023287715449843427,
+    "dm_statistic": 2.8298115356357227,
+    "latency_ms": 9.5,
+    "max_abs_bias_pct": 4.090871200059823,
+    "n_observations": 560,
+    "tail_degradation_pct": 7.288628939555999
+  },
+  "reasons": [
+    "tail risk: worst-decile WAPE degraded 7.29% > 5.0%",
+    "max |bias| 4.09% > 2.0% at a horizon"
+  ],
+  "record_sha256": "abfbcec592674e840e8384826d70991a7adda87ab08e63796746d7eb9fdb65df",
+  "schema": "modelgate.promotion/1",
+  "signature": "29a72f1178f89d68eac188db0b7daf1f63bd98c6618bd26e90e6e62f03c70d38",
+  "thresholds": {
+    "ci_alpha": 0.05,
+    "dm_p_value": 0.05,
+    "latency_budget_ms": 150.0,
+    "max_bias_pct": 2.0,
+    "max_tail_degradation_pct": 5.0,
+    "min_samples": 30
+  }
+}
