@@ -21,6 +21,8 @@ coverage.xml
 # Data and model artifacts
 data/raw/
 data/interim/
+data/*.duckdb
+data/*.duckdb.wal
 mlruns/
 mlartifacts/
 models/
