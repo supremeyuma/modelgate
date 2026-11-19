@@ -35,6 +35,10 @@ artifacts/
 reports/*
 !reports/.gitkeep
 !reports/metrics.json
+!reports/backtest.json
+!reports/latency.json
+!reports/promotions/
+!reports/promotions/*.json
 
 # Secrets / local config
 .env
