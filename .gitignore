@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.python-version
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+htmlcov/
+coverage.xml
+
+# Data and model artifacts
+data/raw/
+data/interim/
+mlruns/
+mlartifacts/
+models/
+artifacts/
+*.parquet
+*.joblib
+*.pkl
+
+# Generated reports (metrics.json is committed, figures are not)
+reports/*
+!reports/.gitkeep
+!reports/metrics.json
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
