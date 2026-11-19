@@ -305,7 +305,7 @@ Coverage target: 85% on `src/modelgate`, enforced in CI.
 ## 9. Done checklist
 
 - [x] M0 scaffold + CI
-- [ ] M1 generator, feature contract, leakage gates
+- [x] M1 generator, feature contract, leakage gates
 - [ ] M2 training, MLflow, rolling-origin backtest
 - [ ] M3 registry + statistical promotion gate + signed records
 - [ ] M4 FastAPI serving with pinned versions
