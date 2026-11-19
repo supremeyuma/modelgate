@@ -1,0 +1,28 @@
+# Placeholder topology for the serving milestone. No service contains logic yet.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: modelgate
+      POSTGRES_PASSWORD: modelgate
+      POSTGRES_DB: modelgate
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U modelgate"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MODELGATE_DB: postgresql://modelgate:modelgate@postgres:5432/modelgate
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles: ["api"]
