@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "modelgate"
-version = "0.1.0"
+version = "1.0.0"
 description = "Training, statistical promotion and drift monitoring for demand forecasts"
 readme = "README.md"
 requires-python = ">=3.12"

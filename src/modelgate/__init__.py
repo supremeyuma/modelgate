@@ -6,4 +6,4 @@ import os
 os.environ.setdefault("MLFLOW_ALLOW_FILE_STORE", "true")
 os.environ.setdefault("MLFLOW_DISABLE_AGENT_HINT", "1")
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
