@@ -38,8 +38,16 @@ models.
 | Drift detection | 0 (no monitoring) | detected, 28-day window | injected-shift demo |
 <!-- metrics:end -->
 
-## Not in scope
+## CV block
 
+- Built an end-to-end forecasting platform where promotion is a paired statistical decision
+  (Diebold-Mariano, bootstrap interval, tail-risk bound) with signed, content-addressed records.
+- Enforced point-in-time feature construction with a property test that rebuilds rows from truncated
+  history, and determinism with explicit seeds and dataset/feature hashes.
+- Shipped a version-pinned FastAPI service that refuses tampered artifacts, plus PSI/KS drift
+  monitoring and PR-based retraining that cannot auto-deploy.
+
+## Not in scope
 - A general-purpose feature store or Kubernetes. Docker Compose and one host are enough.
 - Deep sequence models. A boosted tree must be the bar to beat; only add a second family if the
   comparison is interesting.
