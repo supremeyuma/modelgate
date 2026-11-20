@@ -1,12 +1,19 @@
 # ModelGate — ML training, promotion and drift platform
 
-Repository scaffold. **Status: M0 — plan only, no implementation yet.**
+Repository status: **complete (M0–M6)**. The loop runs offline on a clean checkout:
+`make setup && make ci && make demo`.
 
 Forecast demand for small-business POS data, then let the system — not a human — decide whether a
 new model ships, and notice when the shipped one starts to rot.
 
 - Build plan: [PLAN.md](PLAN.md)
+- Architecture (Mermaid): [docs/architecture.md](docs/architecture.md)
+- Case study with measured results: [docs/case-study.md](docs/case-study.md)
+- Decisions: [docs/decisions/](docs/decisions/)
 - Agent rules: [AGENTS.md](AGENTS.md)
+
+Commands: `make data | train | evaluate | promote DEMO=1 | serve | smoke | monitor-demo | demo |
+report | ci`.
 
 ## Why this exists
 
@@ -21,13 +28,15 @@ models.
 
 ## Target results (to be filled from `make report`, never typed by hand)
 
+<!-- metrics:start -->
 | Metric | Baseline | ModelGate | Status |
 |---|---|---|---|
-| WAPE (rolling-origin, h=28) | seasonal-naive | — | not measured |
-| MASE | seasonal-naive (MASE=1) | — | not measured |
-| p95 inference latency | budget < 150 ms | — | not measured |
-| Challengers rejected by the gate | — | — | not measured |
-| Drift detection lead time | 0 (no monitoring) | — | not measured |
+| WAPE (rolling-origin, h=28) | seasonal-naive 0.2871 | 0.1565 | measured, 6 folds |
+| MASE | seasonal-naive 1.20 (by definition 1.00) | 0.66 | measured |
+| p95 inference latency | budget < 150 ms | 64.8 ms | measured |
+| Challengers rejected by the gate | — | 2 of 3 records | signed records |
+| Drift detection | 0 (no monitoring) | detected, 28-day window | injected-shift demo |
+<!-- metrics:end -->
 
 ## Not in scope
 

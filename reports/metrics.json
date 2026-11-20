@@ -1,0 +1,54 @@
+{
+  "dataset_hash": "2b55406adc04ce191be523b1cdfee7f8904cbfe136bde84623b55dd7796fb8a2",
+  "drift": {
+    "alerts": [
+      "PSI 5.933 > 0.2 on feature lag_1",
+      "PSI 3.547 > 0.2 on feature lag_7",
+      "PSI 10.930 > 0.2 on feature rolling_mean_7",
+      "PSI 9.608 > 0.2 on feature rolling_mean_28",
+      "PSI 2.541 > 0.2 on feature rolling_std_7",
+      "rolling WAPE 0.3622 is 81.1% above expectation 0.2000"
+    ],
+    "detected": true,
+    "psi": {
+      "lag_1": 5.932543126472825,
+      "lag_7": 3.547439240807499,
+      "rolling_mean_28": 9.608373464674468,
+      "rolling_mean_7": 10.930313277848706,
+      "rolling_std_7": 2.5405544023081466
+    },
+    "rolling_wape": 0.3621867881548975,
+    "shift": 1.4,
+    "window_days": 28
+  },
+  "feature_version_hash": "1e0156c7dfa070da43a414996fb50d78da559b8b22915d27803f1666fdac9c62",
+  "folds": 6,
+  "gate": {
+    "inconclusive": 0,
+    "promotions": 1,
+    "records": 3,
+    "rejected_for_tail_risk": 2,
+    "rejections": 2
+  },
+  "horizon": 28,
+  "latency": {
+    "budget_ms": 150.0,
+    "model_version": "v3e096fbeeba8",
+    "p50_ms": 62.59,
+    "p95_ms": 64.85,
+    "passed": true,
+    "samples": 40
+  },
+  "mase": {
+    "model": 0.6576511992881504,
+    "moving_average": 1.2445974224113727,
+    "naive": 1.5276604074187345,
+    "seasonal_naive": 1.1958732880312708
+  },
+  "wape": {
+    "model": 0.15646260256123543,
+    "moving_average": 0.2988511826819499,
+    "naive": 0.36739061723935523,
+    "seasonal_naive": 0.2871088635029575
+  }
+}
