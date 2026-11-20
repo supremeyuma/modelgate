@@ -309,5 +309,5 @@ Coverage target: 85% on `src/modelgate`, enforced in CI.
 - [x] M2 training, MLflow, rolling-origin backtest
 - [x] M3 registry + statistical promotion gate + signed records
 - [x] M4 FastAPI serving with pinned versions
-- [ ] M5 drift monitoring + PR-based retraining
+- [x] M5 drift monitoring + PR-based retraining
 - [ ] M6 architecture, case study, demo, v1.0.0, CV block
