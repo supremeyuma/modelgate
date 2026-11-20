@@ -9,6 +9,7 @@ from modelgate.features.build import (
     build_features,
     check_point_in_time,
     compute_feature_frame,
+    compute_tail_features,
 )
 from modelgate.features.contract import (
     FeatureContract,
@@ -82,6 +83,16 @@ def test_build_features_drops_warmup_and_has_no_nulls(panel: pd.DataFrame) -> No
     matrix = build_features(panel, default_contract())
     assert len(matrix) == len(panel) - 28 * panel["sku"].nunique()
     assert not matrix[list(default_contract().feature_names)].isna().any().any()
+
+
+def test_tail_features_match_full_matrix(panel: pd.DataFrame) -> None:
+    full = compute_feature_frame(panel, default_contract())
+    last = full.groupby("sku").tail(1).set_index("sku")
+    tail = compute_tail_features(panel, default_contract()).set_index("sku")
+    for name in default_contract().feature_names:
+        assert tail[name].to_dict() == pytest.approx(last[name].to_dict())
+    with pytest.raises(ValueError, match="not enough history"):
+        compute_tail_features(panel.head(3), default_contract())
 
 
 def test_leakage_guard_can_actually_fail(panel: pd.DataFrame) -> None:

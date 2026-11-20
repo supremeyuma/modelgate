@@ -6,10 +6,12 @@ factor, so the drift signal is known in advance and the alert threshold is not t
 
 from __future__ import annotations
 
+import json
 from collections.abc import Sequence
 
 import pandas as pd
 
+from modelgate.config import REPORTS_DIR
 from modelgate.data.generator import generate_demand
 from modelgate.data.ingest import read_demand
 from modelgate.features.build import build_features
@@ -104,6 +106,22 @@ def main() -> int:
     print(f"drift alerts       {len(report.alerts)}")
     for alert in report.alerts:
         print(f"  - {alert}")
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    (REPORTS_DIR / "drift.json").write_text(
+        json.dumps(
+            {
+                "shift": SHIFT,
+                "psi": report.psi,
+                "alerts": report.alerts,
+                "detected": report.drifted,
+                "window_days": 28,
+                "rolling_wape": decay.rolling_wape,
+            },
+            indent=2,
+            sort_keys=True,
+        ),
+        encoding="utf-8",
+    )
     if not report.drifted:
         print("no drift detected; nothing to do")
         return 0

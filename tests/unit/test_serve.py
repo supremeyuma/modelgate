@@ -52,6 +52,11 @@ def test_api_contract_schema(client: TestClient) -> None:
     health = client.get("/health").json()
     assert health["status"] == "ok"
 
+    metrics = client.get("/metrics")
+    assert metrics.status_code == 200
+    for series in ("forecast_requests_total", "feature_psi", "rolling_wape"):
+        assert series in metrics.text
+
     response = client.post("/forecast", json={"sku": "SKU-001", "horizon": 14})
     assert response.status_code == 200
     payload = response.json()

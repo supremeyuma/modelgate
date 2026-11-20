@@ -211,7 +211,7 @@ def verify_record(record: dict[str, Any]) -> bool:
 
 def record_filename(record: dict[str, Any]) -> str:
     stamp = str(record["decided_at"]).replace(":", "").replace("-", "").replace("+", "_")
-    return f"promotion-{stamp}.json"
+    return f"promotion-{stamp}-{record['record_sha256'][:8]}.json"
 
 
 def write_record(record: dict[str, Any], directory: Path | None = None) -> Path:
