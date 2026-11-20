@@ -14,12 +14,13 @@ from typing import Any
 
 import joblib
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel, Field, field_validator
 
 from modelgate.config import MODELS_DIR
 from modelgate.features.contract import default_contract
 from modelgate.forecast import recursive_forecast
+from modelgate.monitor import metrics as prometheus
 from modelgate.registry.store import Registry, RegistryError
 from modelgate.train.pipeline import TrainedModel, TrainingConfig
 
@@ -163,6 +164,7 @@ def create_app(
 
     def _forecast(request: ForecastRequest) -> ForecastResponse:
         current = _require()
+        prometheus.record_forecast("online")
         try:
             points = forecast_points(
                 current["model"],
@@ -215,7 +217,15 @@ def create_app(
 
     @app.post("/forecast/batch", response_model=BatchForecastResponse)
     def forecast_batch(request: BatchForecastRequest) -> BatchForecastResponse:
+        prometheus.record_forecast("batch")
         return BatchForecastResponse(forecasts=[_forecast(item) for item in request.requests])
+
+    @app.get("/metrics")
+    def metrics() -> Response:
+        return Response(
+            content=prometheus.metrics_payload(),
+            media_type="text/plain; version=0.0.4",
+        )
 
     return app
 
